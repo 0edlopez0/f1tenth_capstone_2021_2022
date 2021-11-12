@@ -1,1 +1,1 @@
-# f1tenth_capstone_2021_2022
+# F1TENTH Capstone 2021-2022
