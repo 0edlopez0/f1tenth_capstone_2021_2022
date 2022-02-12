@@ -16,10 +16,12 @@ void trajectoryReceived(const geometry_msgs::Twist &msg) {
 	int servo_eff = 500;
 
 
+	ros::NodeHandle n;
+	//TO DO: This shit below dont work for some reason, I think it has to do with <int> part but idk
+	//ros::Publisher pub = n.advertise<int>("control_effort", 1000);
 
-	ros::Publisher pub = n.advertise<int>("control_effort", 1000);
-
-	pub.publish(eff);
+	//TO DO: Can add back once above works
+	//pub.publish(motor_eff);
 }
 
 
