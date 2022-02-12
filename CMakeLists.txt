@@ -8,6 +8,9 @@ project(ucsb_f1tenth_capstone_host)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+  geometry_msgs
+  nav_msgs
+  tf
   roscpp
   rospy
   std_msgs
@@ -205,9 +208,19 @@ include_directories(
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
 
-find_package(Curses REQUIRED)
-add_executable(manual src/manual.cpp)
-target_link_libraries(manual ${catkin_LIBRARIES} ${CURSES_LIBRARIES})
-#add_dependencies(manual f1tenth_cs_host_generate_messages_cpp)
-add_executable(actuators src/actuators.cpp)
-target_link_libraries(actuators ${catkin_LIBRARIES})
+catkin_install_python(PROGRAMS src/actuators.py
+        DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
+add_executable(neutron_base_controller src/neutron_base_controller.cpp)
+target_link_libraries(neutron_base_controller ${catkin_LIBRARIES})
+
+add_executable(tf_broadcaster src/tf_broadcaster.cpp)
+target_link_libraries(tf_broadcaster ${catkin_LIBRARIES})
+
+add_executable(tf_listener src/tf_listener.cpp)
+target_link_libraries(tf_listener ${catkin_LIBRARIES})
+
+add_executable(odom_publisher src/odom_publisher.cpp)
+target_link_libraries(odom_publisher ${catkin_LIBRARIES})
+
