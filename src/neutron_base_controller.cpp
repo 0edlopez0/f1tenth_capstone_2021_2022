@@ -19,9 +19,9 @@ void trajectoryReceived(const geometry_msgs::Twist & state_vel) {
 	motor_setpoint = cmd_vel;
 	motor_state = state_vel;
 
-	error.at(2) = error.at(1);
-	error.at(1) = error.at(0);
-	error.at(0) = motor_setpoint - motor_state; // Current error goes to slot 0
+	motor_error.at(2) = motor_error.at(1);
+	motor_error.at(1) = motor_error.at(0);
+	motor_error.at(0) = motor_setpoint - motor_state; // Current error goes to slot 0
 
 	// calculate delta_t
 	if (!prev_time.isZero()) // Not first time through the program  
@@ -42,25 +42,25 @@ void trajectoryReceived(const geometry_msgs::Twist & state_vel) {
 	}
 	
 	// integrate error
-	error_integral += error.at(0) * delta_t.toSec();
+	motor_error_integral += motor_error.at(0) * delta_t.toSec();
 	// Apply windup limit to limit the size of the integral term
-	if (error_integral > fabsf(windup_limit)){
-		error_integral = fabsf(windup_limit);
+	if (motor_error_integral > fabsf(windup_limit)){
+		motor_error_integral = fabsf(windup_limit);
 	}
-	if (error_integral < -fabsf(windup_limit)){
-		error_integral = -fabsf(windup_limit);
+	if (motor_error_integral < -fabsf(windup_limit)){
+		motor_error_integral = -fabsf(windup_limit);
 	}
 	
 	// take derivative of error
-	error_deriv.at(2) = error_deriv.at(1);
-	error_deriv.at(1) = error_deriv.at(0);
-	error_deriv.at(0) = (error.at(0)-error.at(1))/delta_t.toSec();
+	motor_error_deriv.at(2) = motor_error_deriv.at(1);
+	motor_error_deriv.at(1) = motor_error_deriv.at(0);
+	motor_error_deriv.at(0) = (motor_error.at(0)-motor_error.at(1))/delta_t.toSec();
 	
 	// calculate control effort
-	proportional = Kp * error.at(0);
-	integral = Ki * error_integral;
-	derivative = Kd * error_deriv.at(0);
-	control_effort = proportional + integral + derivative;
+	motor_u_p = Kp * error.at(0);
+	motor_u_i = Ki * error_integral;
+	motor_u_d = Kd * error_deriv.at(0);
+	motor_control_effort = motor_u_p + motor_u_i + motor_u_d;
 	
 	
 	// control effort limits
