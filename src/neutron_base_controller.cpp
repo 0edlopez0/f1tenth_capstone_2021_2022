@@ -88,26 +88,25 @@ int main(int argc, char **argv) {
 	ros::init(argc, argv, "neutron_base_controller");
 
 	ros::NodeHandle n;
-	ros::NodeHandle node_priv("~");
 
 	// parameters 
-	node_priv.param<double>("Kp", Kp, 1.0);
-	node_priv.param<double>("Ki", Ki, 0.0);
-	node_priv.param<double>("Kd", Kd, 0.0);
-	node_priv.param<double>("upper_limit", upper_limit, 100.0);
-	node_priv.param<double>("lower_limit", lower_limit, -100.0);
-	node_priv.param<double>("windup_limit", windup_limit, 1000.0);
-	node_priv.param<double>("cutoff_frequency", cutoff_frequency, -1.0);
-	node_priv.param<std::string>("topic_from_controller", topic_from_controller, "control_effort");
-	node_priv.param<std::string>("topic_from_plant", topic_from_plant, "state");
-	node_priv.param<std::string>("setpoint_topic", setpoint_topic, "setpoint");
-	node_priv.param<std::string>("pid_enable_topic", pid_enable_topic, "pid_enable");
-	node_priv.param<double>("max_loop_frequency", max_loop_frequency, 1.0);
-	node_priv.param<double>("min_loop_frequency", min_loop_frequency, 1000.0);
+	n.param<double>("Kp", Kp, 1.0);
+	n.param<double>("Ki", Ki, 0.0);
+	n.param<double>("Kd", Kd, 0.0);
+	n.param<double>("upper_limit", upper_limit, 100.0);
+	n.param<double>("lower_limit", lower_limit, -100.0);
+	n.param<double>("windup_limit", windup_limit, 1000.0);
+	n.param<double>("cutoff_frequency", cutoff_frequency, -1.0);
+	n.param<std::string>("topic_from_controller", topic_from_controller, "control_effort");
+	n.param<std::string>("topic_from_plant", topic_from_plant, "state");
+	n.param<std::string>("setpoint_topic", setpoint_topic, "setpoint");
+	n.param<std::string>("pid_enable_topic", pid_enable_topic, "pid_enable");
+	n.param<double>("max_loop_frequency", max_loop_frequency, 1.0);
+	n.param<double>("min_loop_frequency", min_loop_frequency, 1000.0);
 
 	// Two parameters to allow for error calculation with discontinous value
-	node_priv.param<bool>("angle_error", angle_error, false);
-	node_priv.param<double>("angle_wrap", angle_wrap, 2.0*3.14159);
+	n.param<bool>("angle_error", angle_error, false);
+	n.param<double>("angle_wrap", angle_wrap, 2.0*3.14159);
 	
 	// instantiate publishers and subscribers
 	
