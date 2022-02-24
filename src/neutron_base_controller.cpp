@@ -39,6 +39,13 @@ void trajectoryReceived(const geometry_msgs::Twist &msg) {
 		return;
 	}
 	
+	double error = setpoint - input;
+	double errsum;
+	errsum += (error.at(0)*delta_t);
+	
+	
+	
+	output = Kp * error + Ki * errsum + kd * dErr;
 
 	ros::NodeHandle n;
 	//TO DO: This shit below dont work for some reason, I think it has to do with <int> part but idk
