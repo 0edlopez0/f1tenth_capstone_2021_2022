@@ -8,12 +8,13 @@ project(ucsb_f1tenth_capstone_host)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  geometry_msgs
-  nav_msgs
-  tf
+	#  geometry_msgs
+	#  nav_msgs
+	#  tf
   roscpp
   rospy
   std_msgs
+  message_generation
 )
 
 ## System dependencies are found with CMake's conventions
@@ -23,7 +24,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
 ## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
-# catkin_python_setup()
+catkin_python_setup()
 
 ################################################
 ## Declare ROS messages, services and actions ##
@@ -50,11 +51,12 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
+add_message_files(
+   FILES
+   effortMsg.msg
+#   Messa.msg
 #   Message2.msg
-# )
+)
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -71,10 +73,10 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
-#generate_messages(
-#   DEPENDENCIES
-#   std_msgs
-#)
+generate_messages(
+   DEPENDENCIES
+   std_msgs
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -106,6 +108,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
+   CATKIN_DEPENDS message_runtime
 #  INCLUDE_DIRS include
 #  LIBRARIES f1tenth_cs_host
 #  CATKIN_DEPENDS roscpp rospy std_msgs
@@ -212,15 +215,18 @@ catkin_install_python(PROGRAMS src/actuators.py
         DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
-add_executable(neutron_base_controller src/neutron_base_controller.cpp)
-target_link_libraries(neutron_base_controller ${catkin_LIBRARIES})
+catkin_install_python(PROGRAMS src/manual.py
+        DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+#add_executable(neutron_base_controller src/neutron_base_controller.cpp)
+#target_link_libraries(neutron_base_controller ${catkin_LIBRARIES})
 
-add_executable(tf_broadcaster src/tf_broadcaster.cpp)
-target_link_libraries(tf_broadcaster ${catkin_LIBRARIES})
+#add_executable(tf_broadcaster src/tf_broadcaster.cpp)
+#target_link_libraries(tf_broadcaster ${catkin_LIBRARIES})
 
-add_executable(tf_listener src/tf_listener.cpp)
-target_link_libraries(tf_listener ${catkin_LIBRARIES})
+#add_executable(tf_listener src/tf_listener.cpp)
+#target_link_libraries(tf_listener ${catkin_LIBRARIES})
 
-add_executable(odom_publisher src/odom_publisher.cpp)
-target_link_libraries(odom_publisher ${catkin_LIBRARIES})
+#add_executable(odom_publisher src/odom_publisher.cpp)
+#target_link_libraries(odom_publisher ${catkin_LIBRARIES})
 
