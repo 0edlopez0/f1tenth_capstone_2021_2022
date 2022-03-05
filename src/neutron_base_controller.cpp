@@ -71,7 +71,7 @@ void trajectoryReceived(const geometry_msgs::Twist & state_vel) {
 	}
 	
 	// publish control effort
-	motor_control_effort_pub.publish(motor_control_effort);
+	control_effort_pub.publish(motor_control_effort);
 	
 	
 	ros::NodeHandle n;
@@ -110,7 +110,7 @@ int main(int argc, char **argv) {
 	
 	// instantiate publishers and subscribers
 	
-	ros::Publisher motor_control_effort_pub = n.advertise<int>("control_effort", 1000);
+	ros::Publisher control_effort_pub = n.advertise<int>("control_effort", 1000);
 	
 	ros::Subscriber sub = n.subscribe("cmd_vel", 1000, trajectoryReceived);
 	ros::Subscriber plant_state_sub = n.subscribe("state_vel",1000, trajectoryReceived);
